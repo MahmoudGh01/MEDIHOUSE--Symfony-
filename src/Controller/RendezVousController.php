@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class RendezVousController extends AbstractController
+ class RendezVousController extends AbstractController
 {
     #[Route('/rendez/vous', name: 'app_rendez_vous')]
     public function index(): Response
