@@ -1,0 +1,30 @@
+<h1 style="text-align:center"><span style="color:#2980b9"><span style="font-family:Georgia,serif"><strong><u>La liste des RendezVous</u></strong></span></span></h1>
+<p ><a href="{{path('app_addRendezVous')}}">ajouter RendezVous</a></span></p>
+
+
+<br>
+<br>
+<table align="center" border="2" cellpadding="1" cellspacing="1" style="width:500px">
+<tr>
+<th>Id</th>
+<th>Docteur</th>
+<th>Patient</th>
+<th>Adresse</th>
+<th>Action</th>
+ 
+</tr>
+<tr>
+{% for i in RendezVous %}
+<td>{{i.Id_Rdv}}</td>
+<td>{{i.Docteur}}</td>
+<td>{{i.Patient}}</td>
+<td>{{i.Adresse}}</td>
+<td>
+    <a href="{{path('supprimerR',{'id':i.id}) }}">Supprimer</a>
+    <a href="{{path('updateR',{'id':i.id}) }}">modifier</a>
+</td>
+     
+</tr>
+{%endfor %}
+
+</table>
