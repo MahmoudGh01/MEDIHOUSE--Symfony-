@@ -5,6 +5,7 @@
 use App\Repository\RendezVousRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: RendezVousRepository::class)]
 class RendezVous
@@ -15,9 +16,11 @@ class RendezVous
     private ?int $id = null;
     
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank (message:'Ce champ est obligatoire')]
     public ?string $Id_Rdv = null;
-
+    
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank (message:'Ce champ est obligatoire')]
     private ?string $Docteur = null;
 
     #[ORM\Column(length: 255)]

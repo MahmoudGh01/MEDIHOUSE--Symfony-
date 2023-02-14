@@ -1,6 +1,6 @@
-<h1> Ajouter un Rendez Vous </h1>
+{%extends 'base.html.twig' %}
 
- 
+{%block content%}
 {{form_start(formClass,{'attr': {'novalidate': 'novalidate'}} )}}
 <table>
 <tr>
@@ -61,3 +61,7 @@
 
  {{ form_widget(formClass.save)}} 
 {{form_end(formClass)}}
+
+{%endblock%}
+
+ 

@@ -34,7 +34,7 @@ use App\Form\RendezVousType;
             $form=$this->createForm(RendezVousType::class,$RendezVous);
             
             $form->handleRequest($request);
-            if($form->isSubmitted()){
+            if($form->isSubmitted()&& $form->isValid()){
                 $em =$doctrine->getManager() ;
                 $em->persist($RendezVous);
                 $em->flush();
