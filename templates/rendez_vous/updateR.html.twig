@@ -1,9 +1,64 @@
-{% extends 'base.html.twig' %}
 
-{% block body %}
 
 <h1>modification du RendezVous </h1>
 
-{{ form(formClass) }}
+{{form_start(formClass,{'attr': {'novalidate': 'novalidate'}} )}}
+<table>
+<tr>
 
-{% endblock %}
+<td> {{ form_label(formClass.Id_Rdv,"Id_Rdv")  }} 
+ </td>
+<td>  {{ form_widget(formClass.Id_Rdv) }} 
+</td>  
+<td> {{ form_errors(formClass.Id_Rdv) }} 
+</td>
+</tr>
+
+<tr>
+
+    <td>  {{ form_label(formClass.Docteur,"Docteur") }} 
+    </td> 
+    <td> {{ form_widget(formClass.Docteur)}} 
+     </td> 
+    <td>  {{ form_errors(formClass.Docteur) }} 
+    </td> 
+    
+    </tr>
+
+    <tr>
+
+        <td>  {{ form_label(formClass.Patient,"Patient") }} 
+        </td> 
+        <td> {{ form_widget(formClass.Patient)}} 
+         </td> 
+        <td>  {{ form_errors(formClass.Patient) }} 
+        </td> 
+        
+        </tr>
+        <tr>
+
+            <td>  {{ form_label(formClass.date,"date") }} 
+            </td> 
+            <td> {{ form_widget(formClass.date)}} 
+             </td> 
+            <td>  {{ form_errors(formClass.date) }} 
+            </td> 
+            
+            </tr>
+            <tr>
+
+                <td>  {{ form_label(formClass.adresse,"adresse") }} 
+                </td> 
+                <td> {{ form_widget(formClass.adresse)}} 
+                 </td> 
+                <td>  {{ form_errors(formClass.adresse) }} 
+                </td> 
+                
+                </tr>
+
+
+
+</table>
+
+ {{ form_widget(formClass.save)}} 
+{{form_end(formClass)}}
