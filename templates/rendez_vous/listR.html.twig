@@ -1,52 +1,160 @@
 {%extends 'base.html.twig' %}
 
 {%block content%}
-<button type="button" class="btn btn-primary"><a href="{{path('app_addRendezVous')}}">ajouter RendezVous</a></button>
-<br>
-<div class="table-responsive">
-    
-    <table class="datatable table table-hover table-center mb-0 dataTable" id="DataTables_Table_0">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Docteur</th>
-                <th>Patient</th>
-                <th>Adresse</th>
-                
+<button type="button" class="btn btn-rounded btn-outline-info"><a href="{{path('app_addRendezVous')}}">ajouter RendezVous</a></button>
+<button type="button" class="btn btn-rounded btn-outline-info"><a href="{{path('app_fiche_new')}}">ajouter Fiche</a></button>
 
-                <th class="text-center">Actions</th>
-            </tr>
-        </thead>
-        
-        <tbody>
+<div class="card-body pt-0">
+								
+    <!-- Tab Menu -->
+    <nav class="user-tabs mb-4">
+        <ul class="nav nav-tabs nav-tabs-bottom nav-justified">
+            <li class="nav-item">
+                <a class="nav-link active" href="#pat_appointments" data-toggle="tab">Appointments</a>
+            </li>
             
-            <tr>
-                {% for i in RendezVous %}
-                <td>{{i.Id_Rdv}}</td>
-                <td>
-                    <h2 class="table-avatar">
-                        <a href="profile.html" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="assets/img/doctors/doctor-thumb-01.jpg" alt="User Image"></a>
-                        <a href="profile.html">{{i.Docteur}}</a>
-                    </h2>
-                </td>
-                
-                <td>
-                    <h2 class="table-avatar">
-                        <a href="profile.html" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="assets/img/patients/patient1.jpg" alt="User Image"></a>
-                        <a href="profile.html">{{i.Patient}} </a>
-                    </h2>
-                </td>
-                <td>{{i.Adresse}}</td>
-                <td class="text-center">
-                    <button type="button" class="btn btn-primary"><a href="{{path('updateR',{'id':i.id}) }}">Modifier</a></button>
-                    <button type="button" class="btn btn-danger"><a href="{{path('supprimerR',{'id':i.id}) }}">Supprimer</a></button>
-                </td>
-                
-            </tr>
+            <li class="nav-item">
+                <a class="nav-link " href="#pat_medical_records" data-toggle="tab"><span class="med-records">Medical Records</span></a>
+            </li>
             
-        </tbody>
-{%endfor%}
-    </table>
+        </ul>
+    </nav>
+    <!-- /Tab Menu -->
     
+    <!-- Tab Content -->
+    <div class="tab-content pt-0">
+        
+        <!-- Appointment Tab -->
+        <div id="pat_appointments" class="tab-pane fade active show">
+            <div class="card card-table mb-0">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-center mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Doctor</th>
+                                    <th>Appt Date</th>
+                                   
+                                    <th>fiche</th>
+                                    <th>Action</th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                     {% for i in RendezVous %}
+                                    <td>
+                                        <h2 class="table-avatar">
+                                            <a href="doctor-profile.html" class="avatar avatar-sm mr-2">
+                                                <img class="avatar-img rounded-circle" src="assets/img/doctors/doctor-thumb-10.jpg" alt="User Image">
+                                            </a>
+                                            <a href="doctor-profile.html">{{i.Docteur}}  <span>Dental</span></a>
+                                        </h2>
+                                    </td>
+                                    <td>{{i.date|date('Y-m-d') }}</td>
+                                    <td><a href="{{path('app_fiche_show',{'id':i.fiche.id}) }}">{{i.fiche.Id_Patient }}</a></td>
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-rounded btn-outline-info"><a href="{{path('updateR',{'id':i.id}) }}">Modifier</a></button>
+                                         <button type="button" class="btn btn-rounded btn-outline-info"><a href="{{path('supprimerR',{'id':i.id}) }}">Supprimer</a></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            {%endfor%}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+         <!-- /Appointment Tab -->
+        
+       
+            
+        <!-- Medical Records Tab -->
+        <div id="pat_medical_records" class="tab-pane fade ">
+            <div class="card card-table mb-0">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-center mb-0">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>age </th>
+                                    <th>Patient</th>
+                                    <th>Action</th>
+                                    
+                                </tr>     
+                            </thead>
+                            <tbody>
+                                
+                                <tr>
+                                    {% for i in RendezVous %}
+                                    <td><a href="{{path('app_fiche_show',{'id':i.fiche.id}) }}">{{i.fiche.id}}</a></td>
+                                    <td>{{i.fiche.age}}</td>
+                                    <td>{{i.Patient}}</td>
+                                    <td class="text-center">
+                                        <div class="table-action">
+                                            <button type="button" class="btn btn-rounded btn-outline-info"><a href="{{path('app_fiche_edit',{'id':i.fiche.id}) }}">Modifier</a></button>
+                                            <button type="button" class="btn btn-rounded btn-outline-info"><a href="{{path('app_fiche_delete',{'id':i.fiche.id}) }}">Supprimer</a></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>  
+                            {%endfor%}	
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Medical Records Tab -->
+        
+        
+        
+    </div>
+    <!-- Tab Content -->
+    
+
+
+
+
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 {%endblock%}

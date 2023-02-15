@@ -74,10 +74,19 @@ use App\Form\RendezVousType;
             $em->flush();
             return $this->redirectToRoute("afficheR");
         }
-        return $this->renderForm("Rendez_Vous/updateR.html.twig",
-        array("formClass"=>$form));
-      } 
+        return $this->renderForm('rendez_vous/updateR.html.twig', [
+            'RendezVous' => $RendezVous,
+            'formClass' => $form,
+        ]);
+      }
+      #[Route('/liste/{id}', name: 'listeByF')]
 
+      public function listebyf(ManagerRegistry $doctrine,$id,RendezVousRepository $repository,Request $request)
+        { $RendezVous= $doctrine
+            ->getRepository(RendezVous::class)
+            ->ListRvByFiche($id);
+            return $this->render('fiche/show.html.twig',['RendezVous'=>$RendezVous]);
+        }
     }
 
 

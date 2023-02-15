@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\FicheRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -12,16 +14,23 @@ class Fiche
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    public ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $Id_Patient = null;
+    public ?string $Id_Patient = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $age = null;
+    public ?int $age = null;
 
-    #[ORM\Column(type: Types::ARRAY, nullable: true)]
-    private array $RendezVous = [];
+    
+
+    #[ORM\OneToMany(mappedBy: 'fiche', targetEntity: RendezVous::class)]
+    private Collection $rendezVouses;
+
+    public function __construct()
+    {
+        $this->rendezVouses = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -52,14 +61,34 @@ class Fiche
         return $this;
     }
 
-    public function getRendezVous(): array
+   
+
+    /**
+     * @return Collection<int, RendezVous>
+     */
+    public function getRendezVouses(): Collection
     {
-        return $this->RendezVous;
+        return $this->rendezVouses;
     }
 
-    public function setRendezVous(?array $RendezVous): self
+    public function addRendezVouse(RendezVous $rendezVouse): self
     {
-        $this->RendezVous = $RendezVous;
+        if (!$this->rendezVouses->contains($rendezVouse)) {
+            $this->rendezVouses->add($rendezVouse);
+            $rendezVouse->setFiche($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRendezVouse(RendezVous $rendezVouse): self
+    {
+        if ($this->rendezVouses->removeElement($rendezVouse)) {
+            // set the owning side to null (unless already changed)
+            if ($rendezVouse->getFiche() === $this) {
+                $rendezVouse->setFiche(null);
+            }
+        }
 
         return $this;
     }

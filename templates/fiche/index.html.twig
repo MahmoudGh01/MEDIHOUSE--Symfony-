@@ -21,7 +21,7 @@
                 <td>{{ fiche.id }}</td>
                 <td>{{ fiche.IdPatient }}</td>
                 <td>{{ fiche.age }}</td>
-                <td>{{ fiche.RendezVous ? fiche.RendezVous|join(', ') : '' }}</td>
+                
                 <td>
                     <a href="{{ path('app_fiche_show', {'id': fiche.id}) }}">show</a>
                     <a href="{{ path('app_fiche_edit', {'id': fiche.id}) }}">edit</a>

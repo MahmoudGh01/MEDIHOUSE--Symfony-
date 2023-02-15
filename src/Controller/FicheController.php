@@ -9,7 +9,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\RendezVous;
 
+use App\Repository\RendezVousRepository;
+use Doctrine\Persistence\ManagerRegistry;
+
+use App\Form\RendezVousType;
 #[Route('/fiche')]
 class FicheController extends AbstractController
 {
@@ -31,7 +36,7 @@ class FicheController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $ficheRepository->save($fiche, true);
 
-            return $this->redirectToRoute('app_fiche_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('afficheR', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('fiche/new.html.twig', [
@@ -41,10 +46,16 @@ class FicheController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_fiche_show', methods: ['GET'])]
-    public function show(Fiche $fiche): Response
-    {
+    public function show( ManagerRegistry $doctrine,Fiche $fiche,$id,RendezVousRepository $repository,Request $request): Response 
+    {  
+        $RendezVous= $doctrine
+            ->getRepository(RendezVous::class)
+            ->ListRvByFiche($id);
+             
         return $this->render('fiche/show.html.twig', [
             'fiche' => $fiche,
+            'RendezVous'=>$RendezVous,
+
         ]);
     }
 
@@ -57,7 +68,7 @@ class FicheController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $ficheRepository->save($fiche, true);
 
-            return $this->redirectToRoute('app_fiche_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('afficheR', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('fiche/edit.html.twig', [
@@ -73,6 +84,6 @@ class FicheController extends AbstractController
             $ficheRepository->remove($fiche, true);
         }
 
-        return $this->redirectToRoute('app_fiche_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('afficheR', [], Response::HTTP_SEE_OTHER);
     }
 }

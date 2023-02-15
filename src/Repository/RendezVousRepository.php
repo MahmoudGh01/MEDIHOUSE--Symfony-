@@ -38,6 +38,16 @@ class RendezVousRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    public function ListRvByFiche($id)
+    {
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager
+        ->createQuery("SELECT r FROM App\Entity\RendezVous r JOIN r.fiche f  WHERE f.id=:id")
+        ->setParameter('id',$id);
+        return $query->getResult(); 
+    }
+          
+        
 
 //    /**
 //     * @return RendezVous[] Returns an array of RendezVous objects

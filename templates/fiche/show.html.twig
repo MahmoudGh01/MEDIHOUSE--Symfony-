@@ -1,4 +1,4 @@
-
+{% extends 'base.html.twig' %}
 
 {% block title %}Fiche{% endblock %}
 
@@ -19,16 +19,52 @@
                 <th>Age</th>
                 <td>{{ fiche.age }}</td>
             </tr>
-            <tr>
-                <th>RendezVous</th>
-                <td>{{ fiche.RendezVous ? fiche.RendezVous|join(', ') : '' }}</td>
-            </tr>
+            
         </tbody>
     </table>
+    <div class="card card-table mb-0">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover table-center mb-0">
+                    <thead>
+                        <tr>
+                            <th>Doctor</th>
+                            <th>Appt Date</th>
+                           
+                            <th>fiche</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        <tr>
+                             {% for i in RendezVous %}
+                            <td>
+                                <h2 class="table-avatar">
+                                   
+                                    <a href="doctor-profile.html">{{i.Docteur}}  <span>Dental</span></a>
+                                </h2>
+                            </td>
+                            <td>{{i.date|date('Y-m-d') }}</td>
+                            <td><a href="{{path('app_fiche_show',{'id':i.fiche.id}) }}">{{i.fiche.id }}</a></td>
+                            <td class="text-right">
+                                 <button type="button" class="btn btn-primary"><a href="{{path('updateR',{'id':i.id}) }}">Modifier</a></button>
+                                <button type="button" class="btn btn-danger"><a href="{{path('supprimerR',{'id':i.id}) }}">Supprimer</a></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    {%endfor%}
+                </table>
+            </div>
+        </div>
+    </div>
 
-    <a href="{{ path('app_fiche_index') }}">back to list</a>
+    <a href="{{ path('afficheR') }}">back to list</a>
 
     <a href="{{ path('app_fiche_edit', {'id': fiche.id}) }}">edit</a>
 
     {{ include('fiche/_delete_form.html.twig') }}
+    
 {% endblock %}
+
