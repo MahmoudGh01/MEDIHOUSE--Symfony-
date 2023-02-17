@@ -61,17 +61,11 @@ use App\Form\RendezVousType;
       {
       //récupérer le RendezVous à supprimer
           $RendezVous= $repository->find($id);
-          $newRendezVous= new RendezVous();
-          $form=$this->createForm(RendezVousType::class,$newRendezVous);
+         // $newRendezVous= new RendezVous();
+          $form=$this->createForm(RendezVousType::class,$RendezVous);
         $form->handleRequest($request);
         if($form->isSubmitted()){
-            $em =$doctrine->getManager() ;
-            $RendezVous->setIdRdv($newRendezVous->getIdRdv());
-            $RendezVous->setDocteur($newRendezVous->getDocteur());
-            $RendezVous->setPatient($newRendezVous->getPatient());
-            $RendezVous->setAdresse($newRendezVous->getAdresse());
-            $RendezVous->setdate($newRendezVous->getdate());
-            $em->flush();
+            $repository->save($RendezVous, true);
             return $this->redirectToRoute("afficheR");
         }
         return $this->renderForm('rendez_vous/updateR.html.twig', [
