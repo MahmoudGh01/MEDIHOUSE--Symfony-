@@ -36,7 +36,7 @@
                                     <th>Appt Date</th>
                                    
                                     <th>fiche</th>
-                                    <th>Action</th>
+                                    <th class="text-center">Action</th>
                                     
                                 </tr>
                             </thead>
@@ -69,7 +69,7 @@
          <!-- /Appointment Tab -->
         
        
-            
+         {%block fiche%}   
         <!-- Medical Records Tab -->
         <div id="pat_medical_records" class="tab-pane fade ">
             <div class="card card-table mb-0">
@@ -81,21 +81,21 @@
                                     <th>ID</th>
                                     <th>age </th>
                                     <th>Patient</th>
-                                    <th>Action</th>
+                                    <th class="text-center">Action</th>
                                     
                                 </tr>     
                             </thead>
                             <tbody>
                                 
                                 <tr>
-                                    {% for i in RendezVous %}
-                                    <td><a href="{{path('app_fiche_show',{'id':i.fiche.id}) }}">{{i.fiche.id}}</a></td>
-                                    <td>{{i.fiche.age}}</td>
-                                    <td>{{i.Patient}}</td>
+                                    {% for i in fiche %}
+                                    <td><a href="{{path('app_fiche_show',{'id':i.id}) }}">{{i.id}}</a></td>
+                                    <td>{{i.age}}</td>
+                                    <td>{{i.Id_Patient}}</td>
                                     <td class="text-center">
                                         <div class="table-action">
-                                            <button type="button" class="btn btn-rounded btn-outline-info"><a href="{{path('app_fiche_edit',{'id':i.fiche.id}) }}">Modifier</a></button>
-                                            <button type="button" class="btn btn-rounded btn-outline-info"><a href="{{path('app_fiche_delete',{'id':i.fiche.id}) }}">Supprimer</a></button>
+                                            <button type="button" class="btn btn-rounded btn-outline-info"><a href="{{path('app_fiche_edit',{'id':i.id}) }}">Modifier</a></button>
+                                            <button type="button" class="btn btn-rounded btn-outline-info"><a href="{{path('app_fiche_delete',{'id':i.id}) }}">Supprimer</a></button>
                                         </div>
                                     </td>
                                 </tr>
@@ -107,7 +107,7 @@
             </div>
         </div>
         <!-- /Medical Records Tab -->
-        
+        {%endblock%}
         
         
     </div>

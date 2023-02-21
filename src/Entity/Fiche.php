@@ -27,6 +27,8 @@ class Fiche
     #[ORM\OneToMany(mappedBy: 'fiche', targetEntity: RendezVous::class)]
     private Collection $rendezVouses;
 
+    
+
     public function __construct()
     {
         $this->rendezVouses = new ArrayCollection();
@@ -89,6 +91,18 @@ class Fiche
                 $rendezVouse->setFiche(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPatient(): ?User
+    {
+        return $this->Patient;
+    }
+
+    public function setPatient(User $Patient): self
+    {
+        $this->Patient = $Patient;
 
         return $this;
     }

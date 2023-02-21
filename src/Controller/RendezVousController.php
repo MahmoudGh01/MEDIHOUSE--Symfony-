@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Controller;
+use App\Entity\Fiche;
+use App\Form\FicheType;
+use App\Repository\FicheRepository;
 use App\Entity\RendezVous;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,14 +24,17 @@ use App\Form\RendezVousType;
 
     #[Route('/afficheRDV', name: 'afficheR')]
 
-      public function AfficheR(RendezVousRepository $repository)
-      {
+      public function AfficheR(RendezVousRepository $repository,FicheRepository $ficherepository)
+      {     $fiche= $ficherepository->findAll();
           $c= $repository->findAll();
-          return $this->render("rendez_vous/listR.html.twig", ["RendezVous"=>$c]);
+          return $this->render("rendez_vous/listR.html.twig", [
+            "RendezVous"=>$c,
+            "fiche"=>$fiche
+        ]);
         }
     
         #[Route('/addRendezVous', name: 'app_addRendezVous')]
-        public function addRendezVous(ManagerRegistry $doctrine,Request $request)
+        public function addRendezVous(ManagerRegistry $doctrine,$id,Request $request)
         {
             $RendezVous= new RendezVous();
             $form=$this->createForm(RendezVousType::class,$RendezVous);
@@ -75,7 +81,7 @@ use App\Form\RendezVousType;
       }
       #[Route('/liste/{id}', name: 'listeByF')]
 
-      public function listebyf(ManagerRegistry $doctrine,$id,RendezVousRepository $repository,Request $request)
+      public function listebyf(ManagerRegistry $doctrine,$id, RendezVousRepository $repository,Request $request)
         { $RendezVous= $doctrine
             ->getRepository(RendezVous::class)
             ->ListRvByFiche($id);
