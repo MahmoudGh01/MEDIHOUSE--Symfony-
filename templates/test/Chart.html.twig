@@ -1,0 +1,60 @@
+{% extends 'base1.html.twig' %}
+
+{% block title %}Statistiques{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css" integrity="sha512-/zs32ZEJh+/EO2N1b0PEdoA10JkdC3zJ8L5FTiQu82LR9S/rOQNfQN7U59U9BC12swNeRAz3HSzIL2vpp4fv3w==" crossorigin="anonymous">
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Statistiques</h1>
+    <canvas id="categories" width="400" height="100"></canvas>
+
+    <canvas id="rendezvous" width="300" height="200"></canvas>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg==" crossorigin="anonymous"></script>
+<script>
+    let categories = document.querySelector("#categories")
+    let categGraph = new Chart(categories, {
+        type: "doughnut",
+        data: {
+            labels: ["Docteur","Patient","Admin","Para"],
+            datasets: [{
+                label: "Répartition des catégories",
+                data:{{RoleCount|raw}},
+                backgroundColor: ["red","green","blue","orange"]
+            }]
+        }
+    })
+
+    let rendezvous = document.querySelector("#rendezvous")
+    let annGraph = new Chart(rendezvous, {
+        type: "line",
+        data: {
+            labels: {{ dates|raw }},
+            datasets: [{
+                label: "Nombre de rendezvous",
+                data: {{ RendezVousCount|raw }},
+                fill: false,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+            }]
+        },
+        options: {
+            
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+         
+    })
+</script>
+{% endblock %}
