@@ -5,7 +5,6 @@ namespace App\Entity;
 use App\Repository\FicheRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FicheRepository::class)]
@@ -14,24 +13,29 @@ class Fiche
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    public ?int $id = null;
+    private ?int $id = null;
+
+    #[ORM\Column]
+    private ?int $Age = null;
 
     #[ORM\Column(length: 255)]
-    public ?string $Id_Patient = null;
+    private ?string $BloodType = null;
 
-    #[ORM\Column(nullable: true)]
-    public ?int $age = null;
-
-    
+    #[ORM\ManyToOne(inversedBy: 'fiches')]
+    private ?User $Patient = null;
 
     #[ORM\OneToMany(mappedBy: 'fiche', targetEntity: RendezVous::class)]
-    private Collection $rendezVouses;
+    private Collection $RendezVous;
 
-    
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private ?User $docteur = null;
 
     public function __construct()
     {
-        $this->rendezVouses = new ArrayCollection();
+        $this->RendezVous = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -39,58 +43,26 @@ class Fiche
         return $this->id;
     }
 
-    public function getIdPatient(): ?string
-    {
-        return $this->Id_Patient;
-    }
-
-    public function setIdPatient(string $Id_Patient): self
-    {
-        $this->Id_Patient = $Id_Patient;
-
-        return $this;
-    }
-
     public function getAge(): ?int
     {
-        return $this->age;
+        return $this->Age;
     }
 
-    public function setAge(?int $age): self
+    public function setAge(int $Age): self
     {
-        $this->age = $age;
+        $this->Age = $Age;
 
         return $this;
     }
 
-   
-
-    /**
-     * @return Collection<int, RendezVous>
-     */
-    public function getRendezVouses(): Collection
+    public function getBloodType(): ?string
     {
-        return $this->rendezVouses;
+        return $this->BloodType;
     }
 
-    public function addRendezVouse(RendezVous $rendezVouse): self
+    public function setBloodType(string $BloodType): self
     {
-        if (!$this->rendezVouses->contains($rendezVouse)) {
-            $this->rendezVouses->add($rendezVouse);
-            $rendezVouse->setFiche($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRendezVouse(RendezVous $rendezVouse): self
-    {
-        if ($this->rendezVouses->removeElement($rendezVouse)) {
-            // set the owning side to null (unless already changed)
-            if ($rendezVouse->getFiche() === $this) {
-                $rendezVouse->setFiche(null);
-            }
-        }
+        $this->BloodType = $BloodType;
 
         return $this;
     }
@@ -100,9 +72,51 @@ class Fiche
         return $this->Patient;
     }
 
-    public function setPatient(User $Patient): self
+    public function setPatient(?User $Patient): self
     {
         $this->Patient = $Patient;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, RendezVous>
+     */
+    public function getRendezVous(): Collection
+    {
+        return $this->RendezVous;
+    }
+
+    public function addRendezVou(RendezVous $rendezVou): self
+    {
+        if (!$this->RendezVous->contains($rendezVou)) {
+            $this->RendezVous->add($rendezVou);
+            $rendezVou->setFiche($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRendezVou(RendezVous $rendezVou): self
+    {
+        if ($this->RendezVous->removeElement($rendezVou)) {
+            // set the owning side to null (unless already changed)
+            if ($rendezVou->getFiche() === $this) {
+                $rendezVou->setFiche(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getDocteur(): ?User
+    {
+        return $this->docteur;
+    }
+
+    public function setDocteur(?User $docteur): self
+    {
+        $this->docteur = $docteur;
 
         return $this;
     }

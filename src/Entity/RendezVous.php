@@ -1,114 +1,135 @@
 <?php
 
- namespace App\Entity;
-         
-         use App\Repository\RendezVousRepository;
-         use Doctrine\DBAL\Types\Types;
-         use Doctrine\ORM\Mapping as ORM;
-         use Symfony\Component\Validator\Constraints as Assert;
-         
-         #[ORM\Entity(repositoryClass: RendezVousRepository::class)]
-         class RendezVous
-         {
-             #[ORM\Id]
-             #[ORM\GeneratedValue]
-             #[ORM\Column]
-             private ?int $id = null;
-             
-             #[ORM\Column(length: 255)]
-             #[Assert\NotBlank (message:'Ce champ est obligatoire')]
-             public ?string $Id_Rdv = null;
-             
-             #[ORM\Column(length: 255)]
-             #[Assert\NotBlank (message:'Ce champ est obligatoire')]
-             private ?string $Docteur = null;
-         
-             #[ORM\Column(length: 255)]
-             private ?string $Patient = null;
-         
-             #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-             private ?\DateTimeInterface $date = null;
-         
-             #[ORM\Column(length: 255)]
-             private ?string $adresse = null;
-      
-             #[ORM\ManyToOne(inversedBy: 'rendezVouses')]
-             private ?Fiche $fiche = null;
-         
-             public function getId(): ?int
-             {
-                 return $this->id;
-             }
-         
-             public function getIdRdv(): ?string
-             {
-                 return $this->Id_Rdv;
-             }
-         
-             public function setIdRdv(string $Id_Rdv): self
-             {
-                 $this->Id_Rdv = $Id_Rdv;
-         
-                 return $this;
-             }
-         
-             public function getDocteur(): ?string
-             {
-                 return $this->Docteur;
-             }
-         
-             public function setDocteur(string $Docteur): self
-             {
-                 $this->Docteur = $Docteur;
-         
-                 return $this;
-             }
-         
-             public function getPatient(): ?string
-             {
-                 return $this->Patient;
-             }
-         
-             public function setPatient(string $Patient): self
-             {
-                 $this->Patient = $Patient;
-         
-                 return $this;
-             }
-         
-             public function getDate(): ?\DateTimeInterface
-             {
-                 return $this->date;
-             }
-         
-             public function setDate(?\DateTimeInterface $date): self
-             {
-                 $this->date = $date;
-         
-                 return $this;
-             }
-         
-             public function getAdresse(): ?string
-             {
-                 return $this->adresse;
-             }
-         
-             public function setAdresse(string $adresse): self
-             {
-                 $this->adresse = $adresse;
-         
-                 return $this;
-             }
-   
-             public function getFiche(): ?Fiche
-             {
-                 return $this->fiche;
-             }
+namespace App\Entity;
 
-             public function setFiche(?Fiche $fiche): self
-             {
-                 $this->fiche = $fiche;
+use App\Repository\RendezVousRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
 
-                 return $this;
-             }
-         }
+#[ORM\Entity(repositoryClass: RendezVousRepository::class)]
+class RendezVous
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $date = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $Local = null;
+
+
+    #[ORM\Column(length: 255)]
+    private ?string $Statut = null;
+
+    #[ORM\ManyToOne(inversedBy: 'RendezVous')]
+    private ?Fiche $fiche = null;
+
+    #[ORM\ManyToOne]
+    private ?User $docteur = null;
+
+    #[ORM\ManyToOne(inversedBy: 'rendezVouses')]
+    private ?User $patient = null;
+
+    #[ORM\Column(type: Types::TIME_MUTABLE)]
+    private ?\DateTimeInterface $Start = null;
+
+
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeInterface $date): self
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    public function getLocal(): ?string
+    {
+        return $this->Local;
+    }
+
+    public function setLocal(string $Local): self
+    {
+        $this->Local = $Local;
+
+        return $this;
+    }
+
+
+
+
+
+    public function getStatut(): ?string
+    {
+        return $this->Statut;
+    }
+
+    public function setStatut(string $Statut): self
+    {
+        $this->Statut = $Statut;
+
+        return $this;
+    }
+
+    public function getFiche(): ?Fiche
+    {
+        return $this->fiche;
+    }
+
+    public function setFiche(?Fiche $fiche): self
+    {
+        $this->fiche = $fiche;
+
+        return $this;
+    }
+
+    public function getDocteur(): ?User
+    {
+        return $this->docteur;
+    }
+
+    public function setDocteur(?User $docteur): self
+    {
+        $this->docteur = $docteur;
+
+        return $this;
+    }
+
+    public function setPatient(?User $patient): self
+    {
+        $this->patient = $patient;
+
+        return $this;
+    }
+
+    public function getPatient(): ?User
+    {
+        return $this->patient;
+    }
+
+    public function getStart(): ?\DateTimeInterface
+    {
+        return $this->Start;
+    }
+
+    public function setStart(\DateTimeInterface $Start): self
+    {
+        $this->Start = $Start;
+
+        return $this;
+    }
+}

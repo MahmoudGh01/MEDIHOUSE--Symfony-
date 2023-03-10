@@ -35,12 +35,13 @@ use App\Form\RendezVousType;
     
         #[Route('/addRendezVous', name: 'app_addRendezVous')]
         public function addRendezVous(ManagerRegistry $doctrine,$id,Request $request)
-        {
+        {   
             $RendezVous= new RendezVous();
             $form=$this->createForm(RendezVousType::class,$RendezVous);
             
             $form->handleRequest($request);
             if($form->isSubmitted()&& $form->isValid()){
+               
                 $em =$doctrine->getManager() ;
                 $em->persist($RendezVous);
                 $em->flush();

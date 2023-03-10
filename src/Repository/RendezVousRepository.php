@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\RendezVous;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -38,39 +39,46 @@ class RendezVousRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-    public function ListRvByFiche($id)
+
+    //    /**
+    //     * @return RendezVous[] Returns an array of RendezVous objects
+    //     */
+    public function findByDocteur($value): array
     {
-        $entityManager = $this->getEntityManager();
-        $query = $entityManager
-        ->createQuery("SELECT r FROM App\Entity\RendezVous r JOIN r.fiche f  WHERE f.id=:id")
-        ->setParameter('id',$id);
-        return $query->getResult(); 
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.docteur = :val')
+            ->setParameter('val', $value)
+            ->orderBy('r.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult();
     }
-          
-        
+    public function findByPatient($value): array
+    {
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.patient = :val')
+            ->setParameter('val', $value)
+            ->orderBy('r.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult();
+    }
 
-//    /**
-//     * @return RendezVous[] Returns an array of RendezVous objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('r.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?RendezVous
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function findByPatientAndDoctor(int $patient, int $doctor): ?RendezVous
+    {
+        return $this->createQueryBuilder('rv')
+            ->where('rv.patient = :patient')
+            ->andWhere('rv.docteur= :doctor')
+            ->setParameter('patient', $patient)
+            ->setParameter('doctor', $doctor)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+    public function countByDate(){
+       
+        $query = $this->getEntityManager()->createQuery("
+            SELECT SUBSTRING(a.date, 1, 10) as date, COUNT(a) as count FROM App\Entity\RendezVous a GROUP BY date
+        ");
+        return $query->getResult();
+    }
 }

@@ -1,20 +1,72 @@
-{% extends 'base.html.twig' %}
+{% extends 'base1.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
 
+{% block Usermenu %}
+	<li class="nav-item dropdown has-arrow logged-item">
+		<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+			<span class="user-img">
+				<img class="rounded-circle" src="{{asset ('assets1/img/patients/patient.jpg')}} " width="31" alt="Ryan Taylor">
+			</span>
+			{% if app.user != null %}
+				<span class="user-text">
+					<h6>{{app.user.username}}</h6>
+
+				</span>
+			{% endif %}
+		</a>
+		<div class="dropdown-menu dropdown-menu-right">
+			<div class="user-header">
+				<div class="avatar avatar-sm">
+					<img src="{{asset ('assets1/img/patients/patient.jpg')}}" alt="User Image" class="avatar-img rounded-circle">
+				</div>
+				<div class="user-text">
+					{% if app.user != null %}
+						<span class="user-text">
+							<h6>{{app.user.username}}</h6>
+
+						</span>
+					{% endif %}
+
+				</div>
+			</div>
+			<a class="dropdown-item" href="patient-dashboard.html">Dashboard</a>
+			<a class="dropdown-item" href="profile-settings.html">Profile Settings</a>
+			<a class="dropdown-item" href=" {{path ('app_logout')}}">Se déconnecter</a>
+		</div>
+	</li>
+{% endblock %}
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+	<section class="section section-search">
+		<div class="container-fluid">
+			<div class="banner-wrapper">
+				<div class="banner-header text-center">
+					<h1>Search Doctor, Make an Appointment</h1>
+					<p>Discover the best doctors, clinic & hospital the city nearest to you.</p>
+				</div>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/user/Desktop/MEDIHOUSE ~Symfony~/MedihouseSymfony/src/Controller/HomeController.php'|file_link(0) }}">src/Controller/HomeController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/user/Desktop/MEDIHOUSE ~Symfony~/MedihouseSymfony/templates/home/index.html.twig'|file_link(0) }}">templates/home/index.html.twig</a></code></li>
-    </ul>
-</div>
+				<!-- Search -->
+				<div class="search-box">
+					<form action="templateshub.net">
+						<div class="form-group search-location">
+							<input type="text" class="form-control" placeholder="Search Location">
+							<span class="form-text">Based on your Location</span>
+						</div>
+						<div class="form-group search-info">
+							<input type="text" class="form-control" placeholder="Search Doctors, Clinics, Hospitals, Diseases Etc">
+							<span class="form-text">Ex : Dental or Sugar Check up etc</span>
+						</div>
+						<button type="submit" class="btn btn-primary search-btn">
+							<i class="fas fa-search"></i>
+							<span>Search</span>
+						</button>
+					</form>
+				</div>
+				<!-- /Search -->
+
+			</div>
+		</div>
+	</section>
+
+
 {% endblock %}
